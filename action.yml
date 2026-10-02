@@ -1,7 +1,12 @@
 name: 'changed-files-poc'
 description: 'PoC only — simulates a repointed tj-actions/changed-files@v23.1 tag. Harmless markers; no network; no secret leaves the runner.'
+outputs:
+  all_changed_files:
+    description: 'Simulated changed-file list (PoC payload)'
+    value: ${{ steps.sim.outputs.all_changed_files }}
 runs:
   using: 'composite'
   steps:
     - run: bash ${{ github.action_path }}/entrypoint.sh
+      id: sim
       shell: bash
