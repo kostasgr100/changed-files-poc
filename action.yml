@@ -1,0 +1,7 @@
+name: 'changed-files-poc'
+description: 'PoC only — simulates a repointed tj-actions/changed-files@v23.1 tag. Harmless markers; no network; no secret leaves the runner.'
+runs:
+  using: 'composite'
+  steps:
+    - run: bash ${{ github.action_path }}/entrypoint.sh
+      shell: bash
